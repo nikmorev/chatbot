@@ -1,0 +1,10 @@
+[
+  {
+    "step": 1,
+    "step-type": "buttons",
+    "buttons": [
+      { "name":  "yes", "next-step": 2 },
+      { "name":  "no", "next-step": 3 }
+    ]
+  }
+]
