@@ -4,8 +4,14 @@ import { StyleSheetManager } from 'styled-components'
 import { Chatbot } from './index'
 import config from './config'
 
+initChatbot()
 
-function initInsideRealDOM(Component: React.FC, props: any, mountElement: HTMLElement) {
+function initChatbot() {
+    if (config.wrapInWebComponent) initInsideShadowDom(Chatbot, config)
+    else initInsideRealDOM(Chatbot, config, document.getElementById('root')!)
+}
+
+function initInsideRealDOM(Component: React.FC<any>, props: any, mountElement: HTMLElement) {
     // document.getElementById('root')!
     ReactDOM.createRoot(mountElement).render(
         <React.StrictMode>
@@ -16,17 +22,17 @@ function initInsideRealDOM(Component: React.FC, props: any, mountElement: HTMLEl
 }
 
 function initInsideShadowDom(Component: React.FunctionComponent<any>, props: any, elementName: string = 'chatbot-by-morev') {
-    const host = document.createElement('div')
-    host.setAttribute('id', 'chatbot-by-morev')
-    document.body.prepend(host)
 
     class ChatbotByMorev extends HTMLElement {
         connectedCallback() {
 
-            const shadow = host.attachShadow({ mode: 'open' })
+            const host = document.createElement('div')
+            host.setAttribute('id', 'chatbot-by-morev')
+
+            this.attachShadow({ mode: 'open' }).appendChild(host)
 
             const styleSlot = document.createElement('section')
-            shadow.appendChild(styleSlot)
+            host.appendChild(styleSlot)
 
             const mountPoint = document.createElement('div')
             styleSlot.appendChild(mountPoint)
@@ -38,15 +44,11 @@ function initInsideShadowDom(Component: React.FunctionComponent<any>, props: any
                     </StyleSheetManager>
                 </React.StrictMode>
             )
-            // const root = ReactDOM.createRoot(mountPoint);
-            // root.render(<Example/>);
         }
     }
 
     customElements.define(elementName, ChatbotByMorev)
-
     document.body.insertAdjacentHTML('beforeend', `<${elementName}/>`)
 }
 
-initInsideShadowDom(Chatbot, config)
 
