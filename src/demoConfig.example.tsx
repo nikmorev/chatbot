@@ -1,6 +1,7 @@
 import { IConfig } from './config'
 
 export const demo = {
+    wrapInWebComponent: true,
     demo: true,
     privacyPolicyURL: '/',
     formActionURLs: '/',
