@@ -113,3 +113,14 @@ export const basicFontSizeInRem = +((16 / getDefaultFontSize()!) || 1).toFixed(2
 export function normalizedRem(coeff=1): string {
     return `${(basicFontSizeInRem * coeff).toFixed(3)}rem`
 }
+
+export function getConfigToUse<T>(realConfig: T, demoConfig: T): T {
+    const realConfigValues = Object.values(realConfig)
+    let numberOfUndefinedFields = 0
+    for (const value of realConfigValues) {
+        if (/\[\[.+\]\]/.test(value)) numberOfUndefinedFields++
+    }
+
+    if (numberOfUndefinedFields === realConfigValues.length) return demoConfig
+    return realConfig
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import styled , { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { ChatTriggerIcon , CrossIcon } from './components/Icons'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
@@ -12,24 +12,12 @@ import {
     hideForSessionAfterClose,
     skipAutoOpeningAfterClose,
     basicFontSizeInRem,
-    normalizedRem
+    normalizedRem,
+    getConfigToUse
 } from './helpers'
-import { RenderStepStructure , StepType , SubmitHandler } from './types'
+import { RenderStepStructure, StepType, SubmitHandler } from './types'
+import config, { demo as demoConfig } from './config'
 import defaultScenario from './scenario'
-
-// temporary
-const params = {
-    demo: true,
-    privacyPolicyURL: '/',
-    formActionURLs: '/',
-    custom: {} as any,
-    component: 'chatbot',
-    projectId: 2,
-    requestId: 124,
-    referal: '/',
-    publicUrl: '/'
-}
-
 
 export function Chatbot(): JSX.Element | null {
 
@@ -43,7 +31,7 @@ export function Chatbot(): JSX.Element | null {
         requestId,
         referal,
         publicUrl
-    } = params
+    } = getConfigToUse(config, demoConfig)
 
     // const submitUrl = formActionURLs?.short
     const avatarSrc = custom?.elements?.avatar?.src || `${publicUrl}/assets/img/widgets/chatbot-default-${projectId}.jpg`
@@ -130,7 +118,7 @@ export function Chatbot(): JSX.Element | null {
         if (name && value) {
             setSelectedValues(values => ({
                 ...values,
-                [name]: parseStepValue(value, stepType, projectId)
+                [name]: parseStepValue(value, stepType, projectId as number)
             }))
         }
 
