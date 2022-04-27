@@ -118,9 +118,11 @@ export function getConfigToUse<T>(realConfig: T, demoConfig: T): T {
     const realConfigValues = Object.values(realConfig)
     let numberOfUndefinedFields = 0
     for (const value of realConfigValues) {
-        if (/\[\[.+\]\]/.test(value)) numberOfUndefinedFields++
+        if (/\[\[.+\]\]/.test(value)) {
+            console.warn(`USING CHAT BOT IN DEMO MODE`)
+            return demoConfig
+        }
     }
 
-    if (numberOfUndefinedFields === realConfigValues.length) return demoConfig
     return realConfig
 }

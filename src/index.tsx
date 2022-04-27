@@ -19,19 +19,19 @@ import { RenderStepStructure, StepType, SubmitHandler } from './types'
 import config, { demo as demoConfig } from './config'
 import defaultScenario from './scenario'
 
-export function Chatbot(): JSX.Element | null {
+const {
+    demo,
+    privacyPolicyURL,
+    formActionURLs,
+    custom,
+    component,
+    projectId,
+    requestId,
+    referal,
+    publicUrl
+} = getConfigToUse(config, demoConfig)
 
-    const {
-        demo,
-        privacyPolicyURL,
-        formActionURLs,
-        custom,
-        component,
-        projectId,
-        requestId,
-        referal,
-        publicUrl
-    } = getConfigToUse(config, demoConfig)
+export function Chatbot(): JSX.Element | null {
 
     // const submitUrl = formActionURLs?.short
     const avatarSrc = custom?.elements?.avatar?.src || `${publicUrl}/assets/img/widgets/chatbot-default-${projectId}.jpg`
