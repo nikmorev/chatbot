@@ -1,30 +1,54 @@
 import { demo as devConfig } from './demoConfig'
+import { Steps } from './types'
 
 const prodConfig = {
     wrapInWebComponent: '[[ wrapInWebComponent ]]',
     demo: '[[ demo ]]',
     privacyPolicyURL: '[[ privacyPolicyURL ]]',
-    formActionURLs: '[[ formActionURLs ]]',
-    custom: '[[ custom ]]',
-    component: '[[ component ]]',
+    answersMutationSettings: '[[ answersMutationSettings ]]',
+    settings: '[[ settings ]]',
     projectId: '[[ projectId ]]',
-    requestId: '[[ requestId ]]',
     referal: '[[ referal ]]',
     publicUrl: '[[ publicUrl ]]',
     scenario: '[[ scenario ]]'
-} as IConfig
+}
 
 export interface IConfig {
-    wrapInWebComponent: boolean | string,
-    demo: boolean | string,
+    wrapInWebComponent: boolean ,
+    demo: boolean,
     privacyPolicyURL: string,
-    formActionURLs: string,
-    custom: any,
-    component: string,
-    projectId: number | string,
-    requestId: number | string,
+    answersMutationSettings: IAnswersMutationSettings,
+    settings: ISettings,
+    projectId: number,
     referal: string,
-    publicUrl: string
+    publicUrl: string,
+    locale?: string,
+    scenario?: Steps
+}
+
+interface ISettings {
+    consultant?: {
+        name: string,
+        avatar?: string,
+        position?: string
+    },
+    positioning: {
+        x: number,
+        y: number
+    },
+    autoOpenDelay?: number,
+    autoAppearingDelay?: number,
+    hideAfterClose: boolean,
+    themeColor: string
+}
+
+export interface IAnswersMutationSettings {
+    url: string,
+    headers?: {[key: string]: string}[],
+    isAjax?: boolean,
+    inNewTab?: boolean,
+    isGql: boolean,
+    gqlScheme: string,
 }
 
 export function getConfigToUse<T>(realConfig: T, demoConfig: T): T {
@@ -39,4 +63,4 @@ export function getConfigToUse<T>(realConfig: T, demoConfig: T): T {
     return realConfig
 }
 
-export default getConfigToUse(prodConfig, devConfig)
+export default getConfigToUse(prodConfig as unknown as IConfig, devConfig)

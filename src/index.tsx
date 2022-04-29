@@ -9,10 +9,10 @@ import {
     parseStepValue,
     shouldRenderChat,
     shouldSkipAutoOpening,
-    hideForSessionAfterClose,
     skipAutoOpeningAfterClose,
     basicFontSizeInRem,
     normalizedRem,
+    mutateResults
 } from './helpers'
 import { RenderStepStructure, StepType, SubmitHandler } from './types'
 import { IConfig } from './config'
@@ -24,28 +24,23 @@ export function Chatbot(props: IConfig): JSX.Element | null {
     const {
         demo,
         privacyPolicyURL,
-        formActionURLs,
-        custom,
-        component,
+        answersMutationSettings,
+        settings,
         projectId,
-        requestId,
-        referal,
         publicUrl
     } = props
 
-    // const submitUrl = formActionURLs?.short
-    const avatarSrc = custom?.elements?.avatar?.src || `${publicUrl}/assets/img/widgets/chatbot-default-${projectId}.jpg`
-    const assistantName = custom?.elements?.name?.text || `Kate`
-    const assistantPosition = custom?.elements?.description?.text || `Studybay personal assistant`
-    const delay = custom?.timings?.delay?.value
-    const hideAfterClose = custom?.timings?.hideAfterClose?.enabled
-    const skipAfterClose = custom?.timings?.skipAfterClose?.enabled
-    const xOffset = custom?.elements?.container?.axis?.x ?? 97
+    const avatarSrc = settings?.consultant?.avatar!
+    const assistantName = settings?.consultant?.name || `Kate`
+    const assistantPosition = settings?.consultant?.position || `Personal assistant`
+    const delay = settings?.autoOpenDelay
+    const hideAfterClose = settings?.hideAfterClose
+    const xOffset = settings?.positioning?.x ?? 97
 
-    const themeColor = custom?.elements?.container?.backgroundColor || 'red'
+    const themeColor = settings?.themeColor || 'red'
 
     const scenario = useMemo(() => {
-        let data = custom?.scenario
+        let data = props?.scenario // should be scenario
         if (!data) {
             console.error('No scenario found!')
             return defaultScenario // for dev purpose
@@ -53,7 +48,7 @@ export function Chatbot(props: IConfig): JSX.Element | null {
 
         if (typeof data === 'string' ) return JSON.parse(data)
         return data
-    }, [custom?.scenario])
+    }, [props?.scenario])
 
     // states
     const [isChatOpen, setIsChatOpen] = useState(false)
@@ -85,12 +80,8 @@ export function Chatbot(props: IConfig): JSX.Element | null {
     const openChatbot = () => setIsChatOpen(true)
 
     const clickTrigger = () => {
-        if (isChatOpen) {
-            // closing chat
-            closeChatbot()
-            hideForSessionAfterClose(hideAfterClose)
-            skipAutoOpeningAfterClose(skipAfterClose)
-        } else {
+        if (isChatOpen) closeChatbot()
+        else {
             openChatbot()
             console.log('Stat: count_open')
         }
@@ -155,7 +146,6 @@ export function Chatbot(props: IConfig): JSX.Element | null {
         // const scrollHeight = chatRef.current.scrollHeight
         // chatRef.current.scroll({ top: scrollHeight, behavior: 'smooth'})
         if (demo) {
-            console.log('scroll')
             const stepElement = stepRef.current!
             chatRef.current?.scrollTo({left: 0, top: stepElement?.offsetTop + stepElement?.offsetHeight / 2, behavior: 'smooth'})
             return
@@ -202,24 +192,8 @@ export function Chatbot(props: IConfig): JSX.Element | null {
 
     useEffect(() => {
         if (!stepsFullfiled || sendingForm || demo) return
-
-        console.log('Selected:', selectedValues)
         setSendingForm(true)
-
-        const formData = new FormData()
-        Object.keys(selectedValues).forEach(key => formData.append(key, selectedValues[key] as string))
-
-        // fetch(submitUrl, {
-        //     method: 'post',
-        //     body: formData,
-        //     //headers: { "Content-Type": "multipart/form-data" }
-        // }).catch(err => {
-        //     setSendingForm(false)
-        //     console.error(err)
-        // })
-        console.log('send form')
-
-        resetAll()
+        mutateResults(selectedValues, answersMutationSettings).finally(resetAll)
     }, [stepsFullfiled])
 
     useEffect(() => {

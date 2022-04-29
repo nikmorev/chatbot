@@ -4,11 +4,10 @@ export const demo = {
     wrapInWebComponent: true,
     demo: true,
     privacyPolicyURL: '/',
-    formActionURLs: '/',
-    custom: {} as any,
+    answersMutationSettings: {} as any,
+    settings: {} as any,
     component: 'chatbot',
     projectId: 2,
-    requestId: 124,
     referal: '/',
     publicUrl: '/'
 } as IConfig
