@@ -1,4 +1,23 @@
-#Pattern of chatbot scenario
+# Chatbot by morev n.
+## Description
+This is chatbot that runs accordingly to the defined script in json format.
+Chatbot runs step by step. Each step consist of two possible messages: from 
+chabot (assistant) and from user. Each message from assistant can consist of text and 
+interactive element (input, select or buttons). Entered text or text from selected option/button
+is printed as a message from the user.
+<br><br>
+## What chatbot consists of
+Chatbot is written on react + styled-components.<br>
+Chatbot can be dynamicaly programmed with any scanario by backend or on the client.
+
+
+## How to run this chatbot in development mode.
+1. Go to *src/scenario*, copy *example.dev.json* to *dev.json* and add there
+the scenario (look at the structure of scenario here below in "Pattern of chatbot scenario").
+2. Go to *src/config*, copy *demo.example.tsx* to *demo.tsx* and edit fields as you need.
+3. Run `npm run dev`.
+
+##Pattern of chatbot scenario
 
 ```typescript
 {
