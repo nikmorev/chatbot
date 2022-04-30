@@ -1,0 +1,138 @@
+{
+  "lastStep": 8,
+  "steps": [
+    {
+      "step": 0,
+      "messages": [
+        "Hello, dear guest!",
+        "I can help you to find the book you need!"
+      ],
+      "stepType": "buttons",
+      "buttons": [
+        {"name": "", "label": "Yes", "value": "Yes", "nextStep": 1},
+        {"name": "", "label": "No", "value": "No", "nextStep": -1}
+      ]
+    },
+    {
+      "step": 1,
+      "messages": [
+        "Great! Please, write the book's author name, title or what it's about"
+      ],
+      "stepType": "input",
+      "input": {
+        "name": "book_keywords",
+        "type": "text",
+        "placeholder": "Your answer",
+        "required": true,
+        "nextStep": 2,
+        "minLength": 2,
+        "maxLength": 150
+      }
+    },
+    {
+      "step": 2,
+      "messages": [
+        "Is ebook fits your interest?"
+      ],
+      "stepType": "buttons",
+      "buttons": [
+        {"name": "accept_ebook", "label": "Yes", "value": "10", "nextStep": 3},
+        {"name": "accept_ebook", "label": "No", "value": "", "nextStep": 3}
+      ]
+    },
+    {
+      "step": 3,
+      "messages": [
+        "Please choose the genre."
+      ],
+      "stepType": "buttons",
+      "buttons": [
+        {"name": "genre", "label": "Fantasy", "value": "1", "nextStep": 4},
+        {"name": "genre", "label": "Action and adventure", "value": "2", "nextStep": 4},
+        {"name": "genre", "label": "Classics", "value": "3", "nextStep": 4},
+        {"name": "genre", "label": "Comic Book or Graphic Novel", "value": "4", "nextStep": 4},
+        {"name": "genre", "label": "Detective and Mystery", "value": "5", "nextStep": 4},
+        {"name": "genre", "label": "Historical Fiction", "value": "6", "nextStep": 4},
+        {"name": "genre", "label": "Education", "value": "7", "nextStep": 4},
+        {"name": "genre", "label": "Other", "value": "8", "nextStep": 4}
+      ]
+    },
+    {
+      "step": 4,
+      "messages": [
+        "What minimum number of reviews book should have?"
+      ],
+      "stepType": "buttons",
+      "select": {
+        "name": "reviews_number",
+        "nextStep": 5,
+        "required": true,
+        "options": [
+          {"label": "0 review", "value": "1"},
+          {"label": "1 reviews", "value": "2"},
+          {"label": "5 reviews", "value": "3"},
+          {"label": "10 reviews", "value": "4"},
+          {"label": "15 reviews", "value": "5"},
+          {"label": "Another number of reviews", "value": "-1", "showInput": true}
+        ]
+      },
+      "input": {
+        "name": "reviews_number",
+        "type": "number",
+        "placeholder": "Number of reviews",
+        "defaultValue": 20,
+        "required": true,
+        "nextStep": 5,
+        "min": 1,
+        "max": 500,
+        "pattern": "\\d+"
+      }
+    },
+    {
+      "step": 5,
+      "messages": [
+        "When you need to get the book?"
+      ],
+      "stepType": "deadlineRelative",
+      "buttons": [
+        {"name": "deadline", "label": "Tomorrow", "value": "24", "nextStep": 6},
+        {"name": "deadline", "label": "In 2 days", "value": "48", "nextStep": 6},
+        {"name": "deadline", "label": "In 3-5 days", "value": "96", "nextStep": 6},
+        {"name": "deadline", "label": "Can wait week or more", "value": "-1", "nextStep": 6}
+      ]
+    },
+    {
+      "step": 6,
+      "messages": [
+        "Cool! You can enter your email address to know when books you are interested get available."
+      ],
+      "stepType": "input",
+      "input": {
+        "name": "email",
+        "type": "email",
+        "placeholder": "Your email",
+        "nextStep": 7,
+        "pattern": "\\S+@\\S+\\.\\S+"
+      }
+    },
+    {
+      "step": 7,
+      "messages": [
+        "Great!",
+        "Please, follow the link bellow and see what we found."
+      ],
+      "stepType": "submit",
+      "buttons": [
+        {"name": "", "label": "Proceed 🔥", "value": "Proceed 🔥", "nextStep": 8}
+      ],
+      "shouldCenter": true,
+      "keepAfter": true,
+      "isLast": true
+    },
+    {
+      "step": -1,
+      "messages": ["It's OK. So just close the chat."],
+      "stepType": "message"
+    }
+  ]
+}

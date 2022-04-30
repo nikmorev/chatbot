@@ -1,5 +1,5 @@
-import { demo as devConfig } from './demoConfig'
-import { Steps } from './types'
+import { demo as devConfig } from './demo'
+import { Steps } from '../types'
 
 const prodConfig = {
     wrapInWebComponent: '[[ wrapInWebComponent ]]',
@@ -7,7 +7,6 @@ const prodConfig = {
     privacyPolicyURL: '[[ privacyPolicyURL ]]',
     answersMutationSettings: '[[ answersMutationSettings ]]',
     settings: '[[ settings ]]',
-    projectId: '[[ projectId ]]',
     referal: '[[ referal ]]',
     publicUrl: '[[ publicUrl ]]',
     scenario: '[[ scenario ]]'
@@ -19,7 +18,6 @@ export interface IConfig {
     privacyPolicyURL: string,
     answersMutationSettings: IAnswersMutationSettings,
     settings: ISettings,
-    projectId: number,
     referal: string,
     publicUrl: string,
     locale?: string,

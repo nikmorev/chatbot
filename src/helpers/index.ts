@@ -1,5 +1,5 @@
-import { StepType } from './types'
-import { IAnswersMutationSettings } from './config'
+import { StepType } from '../types'
+import { IAnswersMutationSettings } from '../config'
 
 export const getMessageTime = (): string => (new Date()).toLocaleTimeString('en', {
     hour: '2-digit',
@@ -10,7 +10,7 @@ export const getMessageTime = (): string => (new Date()).toLocaleTimeString('en'
 export const normalizeMessage = (message: string) => ({ isShown: false, text: message})
 export const normalizeMessages = (messages: string[]) => messages.map(message => ({ isShown: false, text: message}))
 
-export function parseStepValue(value: string | number, stepType: StepType, projectId?: number): string | number {
+export function parseStepValue(value: string | number, stepType: StepType): string | number {
     // deadline comes in hours starting from now
     if (stepType === 'deadlineRelative' || stepType === 'deadlineRelativeTs') {
         const deadlineInMs = (new Date((+Date.now()) + (value as number) * (60 * 60 * 1000))).getTime()
@@ -126,8 +126,14 @@ export async function mutateResults(data: {[key: string]: any }, submitParams: I
     } = submitParams
 
     if (isGql) {
-
-        return
+        return fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                mutation: gqlScheme,
+                variables: data
+            })
+        }).catch(console.error)
     }
 
     if (isAjax) {
@@ -156,7 +162,5 @@ export async function mutateResults(data: {[key: string]: any }, submitParams: I
 
     form.hidden = true
     document.body.append(form)
-    console.log('submit')
     submit.click()
-
 }

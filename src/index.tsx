@@ -16,7 +16,7 @@ import {
 } from './helpers'
 import { RenderStepStructure, StepType, SubmitHandler } from './types'
 import { IConfig } from './config'
-import defaultScenario from './scenario'
+import devscenario from './scenario/dev.json'
 
 
 export function Chatbot(props: IConfig): JSX.Element | null {
@@ -25,16 +25,13 @@ export function Chatbot(props: IConfig): JSX.Element | null {
         demo,
         privacyPolicyURL,
         answersMutationSettings,
-        settings,
-        projectId,
-        publicUrl
+        settings
     } = props
 
     const avatarSrc = settings?.consultant?.avatar!
     const assistantName = settings?.consultant?.name || `Kate`
     const assistantPosition = settings?.consultant?.position || `Personal assistant`
     const delay = settings?.autoOpenDelay
-    const hideAfterClose = settings?.hideAfterClose
     const xOffset = settings?.positioning?.x ?? 97
 
     const themeColor = settings?.themeColor || 'red'
@@ -43,7 +40,7 @@ export function Chatbot(props: IConfig): JSX.Element | null {
         let data = props?.scenario // should be scenario
         if (!data) {
             console.error('No scenario found!')
-            return defaultScenario // for dev purpose
+            return devscenario // for dev purpose
         }
 
         if (typeof data === 'string' ) return JSON.parse(data)
@@ -109,7 +106,7 @@ export function Chatbot(props: IConfig): JSX.Element | null {
         if (name && value) {
             setSelectedValues(values => ({
                 ...values,
-                [name]: parseStepValue(value, stepType, projectId as number)
+                [name]: parseStepValue(value, stepType)
             }))
         }
 
